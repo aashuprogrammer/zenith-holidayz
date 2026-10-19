@@ -1,26 +1,165 @@
 @import "tailwindcss";
 
+@theme {
+  --color-navy-950: #091522;
+  --color-navy-900: #10243A;
+  --color-navy-800: #183350;
+  --color-navy-700: #23466b;
+  --color-teal-900: #0c5458;
+  --color-teal-800: #10696e;
+  --color-teal-700: #147D83;
+  --color-teal-600: #1ba0a8;
+  --color-gold-300: #f3e3be;
+  --color-gold-400: #e5cb93;
+  --color-gold-500: #D8B574;
+  --color-gold-600: #be9752;
+  --color-gold-700: #9a7638;
+  --color-ivory: #FAF8F3;
+  --color-ivory-dark: #f0ebe1;
+  --color-slate-text: #667085;
+  --font-serif: var(--font-serif), "Playfair Display", Georgia, serif;
+  --font-sans: var(--font-sans), "Plus Jakarta Sans", system-ui, sans-serif;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-primary: #FAF8F3;
+  --text-primary: #10243A;
+  --color-navy: #10243A;
+  --color-teal: #147D83;
+  --color-gold: #D8B574;
+  --color-ivory: #FAF8F3;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  font-family: var(--font-sans);
+  background-color: #FAF8F3;
+  color: #10243A;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  background-color: #FAF8F3;
+  color: #10243A;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Typography Accents */
+.font-display {
+  font-family: var(--font-serif);
+}
+
+/* Gold Gradient Button */
+.btn-gold {
+  background: linear-gradient(135deg, #e4c995 0%, #D8B574 50%, #be9752 100%);
+  color: #0c1825;
+  font-weight: 600;
+  box-shadow: 0 4px 18px rgba(216, 181, 116, 0.28);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(216, 181, 116, 0.42);
+  filter: brightness(1.03);
+}
+
+.btn-gold:active {
+  transform: translateY(0);
+}
+
+/* Teal Accent Button */
+.btn-teal {
+  background: linear-gradient(135deg, #199ca3 0%, #147D83 50%, #0c5458 100%);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 4px 18px rgba(20, 125, 131, 0.3);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+}
+
+.btn-teal:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(20, 125, 131, 0.45);
+}
+
+/* Outline Gold Button */
+.btn-outline-gold {
+  border: 1.5px solid #D8B574;
+  color: #D8B574;
+  background: rgba(216, 181, 116, 0.05);
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+}
+
+.btn-outline-gold:hover {
+  background: #D8B574;
+  color: #0c1825;
+  box-shadow: 0 6px 20px rgba(216, 181, 116, 0.25);
+}
+
+/* Luxury Glass Card */
+.glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(216, 181, 116, 0.2);
+  box-shadow: 0 10px 30px rgba(16, 36, 58, 0.06);
+}
+
+.glass-card-dark {
+  background: rgba(16, 36, 58, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(216, 181, 116, 0.25);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+}
+
+/* Refined Subtle Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FAF8F3;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D8B574;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #be9752;
+}
+
+/* Respect Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

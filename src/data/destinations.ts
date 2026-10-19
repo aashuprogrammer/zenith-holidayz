@@ -1,0 +1,425 @@
+export interface Destination {
+  id: string;
+  slug: string;
+  name: string;
+  country: string;
+  region: "International" | "Domestic";
+  tagline: string;
+  heroImage: string;
+  cardImage: string;
+  gallery: string[];
+  shortDescription: string;
+  overview: string;
+  bestTimeToVisit: string;
+  idealDuration: string;
+  currency: string;
+  language: string;
+  visaInfo: string;
+  highlights: string[];
+  popularActivities: string[];
+  packageCount: number;
+  featured: boolean;
+}
+
+export const destinations: Destination[] = [
+  {
+    id: "dest-switzerland",
+    slug: "switzerland",
+    name: "Switzerland",
+    country: "Switzerland",
+    region: "International",
+    tagline: "Alpine Grandeur, Pristine Glaciers & Pure Elegance",
+    heroImage: "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?auto=format&fit=crop&w=1920&q=85",
+    cardImage: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1491557345352-5929e343eb89?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1527668752968-14dc70a27c95?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80",
+    ],
+    shortDescription:
+      "Drift across turquoise lakes, conquer snow-capped peaks aboard panoramic trains, and experience the world's most luxurious alpine hospitality.",
+    overview:
+      "Switzerland represents the pinnacle of European alpine luxury. From the dramatic jagged pyramid of the Matterhorn in Zermatt to the gentle lakeside serenity of Lucerne and the cosmopolitan sophistication of Zurich and Geneva, every corner provides an unforgettable backdrop. Zenith Holidayz crafts custom journeys pairing first-class Swiss rail passes with five-star mountain chalets and private helicopter glacier transfers.",
+    bestTimeToVisit: "May to October (Lakes & Hiking), December to March (Winter Snow & Ski)",
+    idealDuration: "7 – 10 Days",
+    currency: "Swiss Franc (CHF)",
+    language: "German, French, Italian, English widely spoken",
+    visaInfo: "Schengen Visa required for Indian passport holders. Advance biometrics required.",
+    highlights: [
+      "Scenic panoramic rail on the Glacier Express & Bernina Express",
+      "Ascent to Jungfraujoch – Top of Europe at 3,454m",
+      "Private boat cruises on Lake Lucerne & Lake Geneva",
+      "Matterhorn glacier paradise excursion in Zermatt",
+      "Artisan Swiss chocolate and fondue masterclasses",
+    ],
+    popularActivities: [
+      "Panoramic Alpine Rail Journeys",
+      "Private Glacier Hiking",
+      "Luxury Spa & Thermal Baths",
+      "High-altitude Scenic Flights",
+    ],
+    packageCount: 4,
+    featured: true,
+  },
+  {
+    id: "dest-bali",
+    slug: "bali",
+    name: "Bali",
+    country: "Indonesia",
+    region: "International",
+    tagline: "Island of the Gods, Emerald Terraces & Oceanic Tranquility",
+    heroImage: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1920&q=85",
+    cardImage: "https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?auto=format&fit=crop&w=800&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1555400038-63f5ba517a47?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1539367628448-4bc5c9d171c8?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?auto=format&fit=crop&w=1200&q=80",
+    ],
+    shortDescription:
+      "A sanctuary of cascading rice terraces in Ubud, clifftop sea temples in Uluwatu, and secluded beachfront private pool villas.",
+    overview:
+      "Bali is a spiritual sanctuary and tropical paradise seamlessly woven together. Immerse yourself in ancient Balinese cleansing ceremonies at Tirta Empul, awaken to birdsong above misty jungle valleys in Ubud, and watch golden sunsets illuminate the dramatic Indian Ocean cliffs of Uluwatu. Our itineraries feature handpicked luxury villas with dedicated butlers, wellness retreats, and private yacht charters to Nusa Penida.",
+    bestTimeToVisit: "April to October (Dry Season, Sunny & Pleasant)",
+    idealDuration: "6 – 8 Days",
+    currency: "Indonesian Rupiah (IDR)",
+    language: "Balinese, Indonesian, English widely spoken",
+    visaInfo: "Electronic Visa on Arrival (e-VOA) available for 30 days.",
+    highlights: [
+      "Sunrise trek or 4WD tour of Mount Batur with breakfast",
+      "Tegalalang tiered rice terraces and jungle swings",
+      "Uluwatu Clifftop Temple & sunset Kecak dance performance",
+      "Private catamaran sailing to Nusa Penida & Crystal Bay",
+      "Holistic Balinese Ayurveda spa and healing rituals",
+    ],
+    popularActivities: [
+      "Private Pool Villa Stays",
+      "Sacred Temple Tours",
+      "Surfing & Ocean Diving",
+      "Fine Dining by the Sea",
+    ],
+    packageCount: 4,
+    featured: true,
+  },
+  {
+    id: "dest-dubai",
+    slug: "dubai",
+    name: "Dubai",
+    country: "United Arab Emirates",
+    region: "International",
+    tagline: "Futuristic Marvels, Desert Serenity & Unmatched Splendour",
+    heroImage: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1920&q=85",
+    cardImage: "https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=800&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1580674684081-7617fbf3d745?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1546412414-e1885259563a?auto=format&fit=crop&w=1200&q=80",
+    ],
+    shortDescription:
+      "Where cutting-edge architectural marvels meet golden Arabian dunes, Michelin-starred gastronomy, and legendary ultra-luxury shopping.",
+    overview:
+      "Dubai represents the daring future of luxury. Towering above the Arabian Gulf, it offers world-first experiences: dining at Burj Khalifa, gliding along Dubai Marina aboard a private motor yacht, or escaping into the tranquil dunes for an opulent Bedouin desert dinner beneath starlit skies. Zenith Holidayz designs bespoke Dubai vacations tailored for families, couples, and discerning shoppers alike.",
+    bestTimeToVisit: "November to March (Pleasant, Mild Winter Sun)",
+    idealDuration: "5 – 7 Days",
+    currency: "UAE Dirham (AED)",
+    language: "Arabic (Official), English widely spoken throughout",
+    visaInfo: "Pre-arranged tourist eVisa easily obtained via passport scan.",
+    highlights: [
+      "VIP access to Burj Khalifa At The Top SKY (Levels 148 & 125)",
+      "Luxury 4x4 desert safari with private stargazing & gourmet dinner",
+      "Sunset yacht cruise across Dubai Marina and Palm Jumeirah",
+      "Visit to the Museum of the Future and Dubai Miracle Garden",
+      "Exclusive shopping at Dubai Mall and traditional Gold & Spice Souks",
+    ],
+    popularActivities: [
+      "Desert Dune Bashing & Glamping",
+      "Superyacht Cruising",
+      "High-end Retail & Fine Dining",
+      "Helicopter Skyline Tours",
+    ],
+    packageCount: 3,
+    featured: true,
+  },
+  {
+    id: "dest-maldives",
+    slug: "maldives",
+    name: "Maldives",
+    country: "Maldives",
+    region: "International",
+    tagline: "Overwater Villas, Iridescent Lagoons & Pure Solitude",
+    heroImage: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=1920&q=85",
+    cardImage: "https://images.unsplash.com/photo-1573843981267-be1999ff37cd?auto=format&fit=crop&w=800&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1573843981267-be1999ff37cd?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80",
+    ],
+    shortDescription:
+      "Step directly from your secluded water villa into turquoise atolls filled with manta rays, vibrant coral gardens, and total serenity.",
+    overview:
+      "The Maldives is the quintessential paradise on earth. Each resort occupies its own private coral island, guaranteeing complete seclusion. Wake up to panoramic ocean views, swim alongside gentle nurse sharks and sea turtles, and indulge in overwater spa treatments to the soothing rhythm of gentle waves. Zenith Holidayz secures preferred rates, complimentary sea-plane transfers, and romantic inclusions for honeymoons and milestone anniversaries.",
+    bestTimeToVisit: "November to April (Dry Northeast Monsoon, Calm Waters)",
+    idealDuration: "4 – 6 Days",
+    currency: "Maldivian Rufiyaa (MVR) / US Dollars universally accepted",
+    language: "Dhivehi, English widely spoken in resorts",
+    visaInfo: "Free 30-day tourist visa granted upon arrival for all nationalities.",
+    highlights: [
+      "Scenic seaplane transfers over archipelago coral rings",
+      "Submerged underwater dining and wine cellar experiences",
+      "Private sandbank candlelit dinners under the constellation",
+      "Snorkeling and diving safaris with whale sharks and manta rays",
+      "Overwater hammocks and sunset catamaran dolphin cruises",
+    ],
+    popularActivities: [
+      "Overwater Villa Living",
+      "Reef Snorkeling & Diving",
+      "Private Sandbank Picnics",
+      "Couple's Spa Treatments",
+    ],
+    packageCount: 3,
+    featured: true,
+  },
+  {
+    id: "dest-thailand",
+    slug: "thailand",
+    name: "Thailand",
+    country: "Thailand",
+    region: "International",
+    tagline: "Golden Temples, Limestone Karsts & Vibrant Street Life",
+    heroImage: "https://images.unsplash.com/photo-1528181304800-259b08848526?auto=format&fit=crop&w=1920&q=85",
+    cardImage: "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&w=800&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1528181304800-259b08848526?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1506665531195-3566af2b4dfa?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+    ],
+    shortDescription:
+      "From the glistening spires of Bangkok's Grand Palace to the emerald bays of Phuket and the dramatic cliffs of Krabi.",
+    overview:
+      "Thailand captivates every traveler with its boundless hospitality, world-celebrated culinary richness, and postcard-perfect islands. Whether navigating Bangkok's bustling night markets and grand Buddhist temples, unwinding in a luxury clifftop sanctuary in Krabi, or island-hopping by traditional longtail boat in Phi Phi, Zenith Holidayz ensures seamless transfers, private guides, and hand-selected five-star resorts.",
+    bestTimeToVisit: "November to early April (Cool, dry and sun-drenched)",
+    idealDuration: "6 – 8 Days",
+    currency: "Thai Baht (THB)",
+    language: "Thai, English widely spoken in tourism areas",
+    visaInfo: "Visa exemption / e-Visa available for Indian tourists.",
+    highlights: [
+      "Bangkok Grand Palace, Wat Pho & Chao Phraya River dinner cruise",
+      "Speedboat journey through Phi Phi Islands and Maya Bay",
+      "Sea canoeing in Phang Nga Bay around James Bond Island",
+      "Ethical elephant sanctuary interactions in Chiang Mai or Phuket",
+      "Authentic Thai culinary workshops and luxury night markets",
+    ],
+    popularActivities: [
+      "Island Hopping by Speedboat",
+      "Night Markets & Culinary Tours",
+      "Traditional Thai Massage & Spas",
+      "Snorkeling in Coral Lagoons",
+    ],
+    packageCount: 3,
+    featured: true,
+  },
+  {
+    id: "dest-japan",
+    slug: "japan",
+    name: "Japan",
+    country: "Japan",
+    region: "International",
+    tagline: "Sacred Shrines, Futuristic Metropolises & Cherry Blossoms",
+    heroImage: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1920&q=85",
+    cardImage: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=800&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1524413840807-0c3cb6fa808d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1492571350019-22de08371fd3?auto=format&fit=crop&w=1200&q=80",
+    ],
+    shortDescription:
+      "A harmonious confluence of thousand-year-old wooden temples, Shinkansen bullet trains, serene onsen hot springs, and neon skylines.",
+    overview:
+      "Japan is an awe-inspiring sensory experience. Wander through Kyoto's quiet bamboo groves and vermilion Torii gates, marvel at the neon energy of Tokyo's Shibuya crossing, and pause in reverent awe before snow-dusted Mount Fuji. Zenith Holidayz arranges first-class Japan Rail passes, stays in traditional luxury ryokans with private onsen baths, and authentic tea ceremony experiences with master artisans.",
+    bestTimeToVisit: "March to May (Sakura Spring) & September to November (Autumn Foliage)",
+    idealDuration: "8 – 11 Days",
+    currency: "Japanese Yen (JPY)",
+    language: "Japanese, English signage common in major transit",
+    visaInfo: "eVisa available for Indian tourists with simplified processing.",
+    highlights: [
+      "Fushimi Inari Shrine and Arashiyama Bamboo Grove in Kyoto",
+      "Mount Fuji 5th Station and Lake Ashi pirate boat cruise in Hakone",
+      "Traditional Kaiseki multi-course dining in a historic Ryokan",
+      "Tokyo skyline views from Roppongi Hills & Shibuya Sky",
+      "Bullet train (Shinkansen) journey across the Japanese countryside",
+    ],
+    popularActivities: [
+      "Ryokan & Onsen Experiences",
+      "Bullet Train Journeys",
+      "Historical Temple Tours",
+      "Authentic Tea Ceremonies",
+    ],
+    packageCount: 2,
+    featured: true,
+  },
+  {
+    id: "dest-paris",
+    slug: "paris",
+    name: "Paris",
+    country: "France",
+    region: "International",
+    tagline: "The City of Light, Haute Couture & Timeless Romance",
+    heroImage: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1920&q=85",
+    cardImage: "https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?auto=format&fit=crop&w=800&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1509439581779-6298f75bf6e5?auto=format&fit=crop&w=1200&q=80",
+    ],
+    shortDescription:
+      "Stroll along the Seine, admire masterpieces at the Louvre, ascend the Eiffel Tower at twilight, and savor delicate pastries in Saint-Germain.",
+    overview:
+      "Paris is an enduring celebration of art, architecture, gastronomy, and romance. From the grand tree-lined Champs-Élysées to the intimate cobblestone alleys of Montmartre, Paris rewards the curious and the romantic. Zenith Holidayz curates Parisian escapes featuring boutique accommodations with Eiffel views, skip-the-line museum privileges, and private champagne cruises along the river Seine.",
+    bestTimeToVisit: "April to June & September to November (Mild & beautiful)",
+    idealDuration: "4 – 6 Days",
+    currency: "Euro (EUR)",
+    language: "French, English widely spoken in tourist sectors",
+    visaInfo: "Schengen Visa required for Indian passport holders.",
+    highlights: [
+      "Champagne illuminations cruise along the Seine river",
+      "Skip-the-line access to the Louvre Museum & Musée d'Orsay",
+      "Private day tour to the Palace of Versailles and royal gardens",
+      "Ascent to the summit of the Eiffel Tower",
+      "Artisan pastry and wine tasting in the Marais district",
+    ],
+    popularActivities: [
+      "Private Museum Guided Tours",
+      "Romantic Seine River Cruises",
+      "Fine Dining & Patisserie Trails",
+      "Day Trips to Versailles",
+    ],
+    packageCount: 2,
+    featured: true,
+  },
+  {
+    id: "dest-kashmir",
+    slug: "kashmir",
+    name: "Kashmir",
+    country: "India",
+    region: "Domestic",
+    tagline: "Paradise on Earth, Floating Shikaras & Pristine Meadows",
+    heroImage: "https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=1920&q=85",
+    cardImage: "https://images.unsplash.com/photo-1606214174585-fe31582dc6ee?auto=format&fit=crop&w=800&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1606214174585-fe31582dc6ee?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1566837945700-30057527ade0?auto=format&fit=crop&w=1200&q=80",
+    ],
+    shortDescription:
+      "Glide on tranquil Dal Lake aboard handcrafted cedar houseboats, ascend the snow meadows of Gulmarg, and walk through fragrant pine forests in Pahalgam.",
+    overview:
+      "Revered as 'Heaven on Earth', the Kashmir Valley is framed by majestic Pir Panjal mountain peaks, mirror-like lakes, and lush saffron fields. Experience the timeless charm of staying in a heritage cedar houseboat on Dal Lake, taking morning shikara rides past floating flower markets, riding the world-renowned Gulmarg Gondola to Apharwat Peak, and picnicking by the Lidder River in Pahalgam.",
+    bestTimeToVisit: "March to October (Blooming Flowers & Meadows), Dec to Feb (Winter Snow)",
+    idealDuration: "5 – 7 Days",
+    currency: "Indian Rupee (INR)",
+    language: "Kashmiri, Urdu, Hindi, English",
+    visaInfo: "Domestic travel. Valid government photo ID required for flight check-in.",
+    highlights: [
+      "Stay in a luxury cedarwood houseboat on Dal Lake or Nigeen Lake",
+      "Gulmarg Gondola Phase 1 & 2 reaching 13,780 feet",
+      "Shikara boat ride through the floating gardens and lotus lakes",
+      "Pahalgam Valley: Betaab Valley, Aru Valley and Baisaran meadow",
+      "Mughal Gardens: Shalimar Bagh, Nishat Bagh and Chashme Shahi",
+    ],
+    popularActivities: [
+      "Shikara Rides at Sunrise",
+      "Gulmarg Gondola & Snow Sports",
+      "Pine Meadow Horse Trails",
+      "Authentic Kashmiri Wazwan Dining",
+    ],
+    packageCount: 4,
+    featured: true,
+  },
+  {
+    id: "dest-rajasthan",
+    slug: "rajasthan",
+    name: "Rajasthan",
+    country: "India",
+    region: "Domestic",
+    tagline: "Land of Maharajas, Golden Fortresses & Royal Palaces",
+    heroImage: "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=1920&q=85",
+    cardImage: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=800&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1576487248805-cf45f6bcc67f?auto=format&fit=crop&w=1200&q=80",
+    ],
+    shortDescription:
+      "Journey through grand royal fortresses, tranquil palace lakes in Udaipur, the Pink City of Jaipur, and the golden Thar Desert.",
+    overview:
+      "Rajasthan is a tapestry of royal legends, monumental fortresses, and vibrant celebrations. Marvel at the intricate latticework of Jaipur's Hawa Mahal, cruise on serene Lake Pichola as the sunset casts a golden hue over Udaipur's white marble City Palace, and listen to desert folk music around a bonfire in the Sam sand dunes of Jaisalmer. Zenith Holidayz arranges stays in converted heritage palaces and royal tented camps.",
+    bestTimeToVisit: "October to March (Pleasant winter weather)",
+    idealDuration: "6 – 9 Days",
+    currency: "Indian Rupee (INR)",
+    language: "Hindi, Rajasthani, English",
+    visaInfo: "Domestic travel. Valid government photo ID required.",
+    highlights: [
+      "Private boat cruise on Lake Pichola past Jag Mandir in Udaipur",
+      "Amer Fort, City Palace, and Jantar Mantar observatory in Jaipur",
+      "Camel safari and royal tented camp stay in the Jaisalmer Thar desert",
+      "Mehrangarh Fort overlooking the blue city of Jodhpur",
+      "Fine dining in heritage courtyards with Rajasthani folk performances",
+    ],
+    popularActivities: [
+      "Heritage Palace Stays",
+      "Private Fortress Exploration",
+      "Desert Glamping & Stargazing",
+      "Royal Handloom & Jewelry Shopping",
+    ],
+    packageCount: 3,
+    featured: true,
+  },
+  {
+    id: "dest-kerala",
+    slug: "kerala",
+    name: "Kerala",
+    country: "India",
+    region: "Domestic",
+    tagline: "God's Own Country, Backwater Lagoons & Misty Tea Hills",
+    heroImage: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1920&q=85",
+    cardImage: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=800&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=80",
+    ],
+    shortDescription:
+      "Cruise through emerald palm-fringed backwaters aboard private houseboats, walk through the cool tea gardens of Munnar, and rejuvenate with authentic Ayurveda.",
+    overview:
+      "Kerala is India's most serene retreat, blessed with tropical backwaters, spice plantations, and misty Western Ghats mountain ranges. Experience the tranquility of drifting through Alleppey on a private traditional kettuvallam houseboat, breathe in the crisp mountain air surrounded by rolling tea gardens in Munnar, and indulge in centuries-old authentic Ayurvedic rejuvenation therapies.",
+    bestTimeToVisit: "September to March (Pleasant and cool)",
+    idealDuration: "5 – 8 Days",
+    currency: "Indian Rupee (INR)",
+    language: "Malayalam, English widely understood",
+    visaInfo: "Domestic travel. Valid government photo ID required.",
+    highlights: [
+      "Private overnight cruise on a traditional luxury Kerala houseboat",
+      "Rolling tea estate walks and tea factory tours in Munnar",
+      "Kathakali dance performance and Kalaripayattu martial arts show",
+      "Wildlife boat safari on Periyar Lake in Thekkady",
+      "Authentic herbal Ayurvedic massage and wellness therapies",
+    ],
+    popularActivities: [
+      "Private Houseboat Cruising",
+      "Ayurvedic Rejuvenation",
+      "Tea & Spice Plantation Trails",
+      "Coastal Seafood Dining",
+    ],
+    packageCount: 3,
+    featured: true,
+  },
+];
