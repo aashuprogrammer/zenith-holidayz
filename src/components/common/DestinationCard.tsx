@@ -33,7 +33,7 @@ export default function DestinationCard({ destination }: DestinationCardProps) {
             {destination.region}
           </span>
           <span className="text-[10px] font-medium bg-black/40 backdrop-blur-md text-white/90 px-2.5 py-1 rounded-full">
-            {destination.packageCount} Packages
+            {destination.packageCount} {destination.packageCount === 1 ? "Package" : "Packages"}
           </span>
         </div>
 

@@ -4,12 +4,13 @@ import { packages } from "@/data/packages";
 import PackageCard from "@/components/common/PackageCard";
 import Breadcrumb from "@/components/common/Breadcrumb";
 import Link from "next/link";
-import { Plane, Compass, Sparkles, ShieldCheck } from "lucide-react";
+import CurrencySelector from "@/components/common/CurrencySelector";
+import { Plane, Compass, Sparkles, ShieldCheck, Coins } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "International Holiday Packages | Bespoke Worldwide Vacations",
   description:
-    "Explore luxury international holiday packages to Switzerland, Bali, Dubai, Maldives, Thailand, and Japan with Zenith Holidayz Private Limited.",
+    "Explore luxury international holiday packages to Switzerland, the United Kingdom, Bali, Dubai, Maldives, Thailand, and Japan with Zenith Holidayz Private Limited.",
 };
 
 export default function InternationalPackagesPage() {
@@ -28,7 +29,7 @@ export default function InternationalPackagesPage() {
             International Holiday Packages
           </h1>
           <p className="text-white/80 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
-            From first-class panoramic rail through the Swiss Alps to private overwater villas in the Maldives and futuristic skyline opulence in Dubai.
+            From first-class panoramic rail through the Swiss Alps and royal heritage tours across the United Kingdom to private overwater villas in the Maldives and futuristic skyline opulence in Dubai.
           </p>
         </div>
       </div>
@@ -60,6 +61,24 @@ export default function InternationalPackagesPage() {
           >
             Custom Visa & Trip Plan
           </Link>
+        </div>
+
+        {/* Currency Display Bar for International Packages */}
+        <div className="mt-8 bg-white rounded-2xl p-5 sm:p-6 border border-gold-500/20 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gold-500/10 text-gold-600 flex items-center justify-center shrink-0">
+              <Coins className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="text-xs sm:text-sm font-bold text-navy-950">
+                International Currency & Pricing Display
+              </h3>
+              <p className="text-xs text-slate-text mt-0.5">
+                Choose your preferred currency (including UK GBP – British Pound) to view converted starting indicators across all packages.
+              </p>
+            </div>
+          </div>
+          <CurrencySelector variant="pills" label="Currency:" />
         </div>
 
         {/* Packages Grid */}

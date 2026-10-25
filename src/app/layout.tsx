@@ -68,6 +68,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { CurrencyProvider } from "@/context/CurrencyContext";
+
 export default function RootLayout({
   children,
 }: {
@@ -79,10 +81,13 @@ export default function RootLayout({
       className={`${plusJakartaSans.variable} ${playfairDisplay.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-ivory text-navy-950 font-sans">
-        <AnnouncementBar />
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <CurrencyProvider>
+          <AnnouncementBar />
+          <Navbar />
+          <main className="flex-1">{children}</main>
+          {/* Global Footer with Developer Credit */}
+          <Footer />
+        </CurrencyProvider>
       </body>
     </html>
   );

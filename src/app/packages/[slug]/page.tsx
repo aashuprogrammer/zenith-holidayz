@@ -6,7 +6,7 @@ import Link from "next/link";
 import { packages } from "@/data/packages";
 import Breadcrumb from "@/components/common/Breadcrumb";
 import PackageCard from "@/components/common/PackageCard";
-import EnquiryModalWrapper from "./EnquiryModalWrapper";
+import PackagePricingBox from "./PackagePricingBox";
 import {
   Clock,
   MapPin,
@@ -254,20 +254,11 @@ export default async function PackageDetailPage({ params }: Props) {
           {/* Right Column: Sticky Pricing & Quick Action (4 cols) */}
           <div className="lg:col-span-4 space-y-6 lg:sticky lg:top-24">
             <div className="bg-navy-950 rounded-2xl p-6 sm:p-8 text-white border border-gold-500/30 shadow-2xl space-y-6">
-              <div>
-                <span className="text-[10px] uppercase tracking-wider text-gold-400 font-semibold block">
-                  Starting Estimate Indicator
-                </span>
-                <div className="text-3xl font-display font-bold text-white mt-1">
-                  {pkg.startingEstimate}
-                </div>
-                <p className="text-[11px] text-white/60 leading-relaxed mt-2 italic">
-                  {pkg.pricingNote}
-                </p>
-              </div>
-
-              {/* Action Buttons via Client Modal Trigger */}
-              <EnquiryModalWrapper
+              {/* Pricing Box & Client Enquiry Modal */}
+              <PackagePricingBox
+                startingPriceINR={pkg.startingPriceINR}
+                defaultEstimate={pkg.startingEstimate}
+                pricingNote={pkg.pricingNote}
                 destinationName={pkg.destinationName}
                 packageTitle={pkg.title}
                 travelType={pkg.region === "Domestic" ? "domestic" : "international"}

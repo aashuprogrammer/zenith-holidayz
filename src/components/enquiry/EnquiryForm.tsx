@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from "react";
 import confetti from "canvas-confetti";
 import { siteConfig } from "@/config/site";
+import { useCurrency } from "@/context/CurrencyContext";
+import CurrencySelector from "@/components/common/CurrencySelector";
 import {
   Calendar,
   Users,
@@ -15,7 +17,12 @@ import {
   Mail,
   ShieldCheck,
   Compass,
+  Coins,
+  ArrowRight,
+  ExternalLink,
 } from "lucide-react";
+
+const ADMIN_EMAIL = "mauryaanurag866@gmail.com";
 
 interface EnquiryFormProps {
   initialDestination?: string;
@@ -32,6 +39,8 @@ export default function EnquiryForm({
   isModal = false,
   onSuccess,
 }: EnquiryFormProps) {
+  const { currency, currencyInfo, availableBudgets } = useCurrency();
+
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -42,7 +51,7 @@ export default function EnquiryForm({
     returnDate: "",
     adults: 2,
     children: 0,
-    budgetRange: "₹1,50,000 – ₹2,50,000 per person",
+    budgetRange: availableBudgets[1] || availableBudgets[0] || "Flexible",
     holidayType: initialHolidayType,
     additionalRequirements: "",
     consent: false,
@@ -56,11 +65,40 @@ export default function EnquiryForm({
     setMinDate(new Date().toISOString().split("T")[0]);
   }, []);
 
+  // When currency changes, keep the budget preference updated to match active currency options
+  useEffect(() => {
+    if (availableBudgets && availableBudgets.length > 0) {
+      const match = availableBudgets.find((b) => b === formData.budgetRange);
+      if (!match) {
+        setFormData((prev) => ({
+          ...prev,
+          budgetRange: availableBudgets[1] || availableBudgets[0],
+        }));
+      }
+    }
+  }, [availableBudgets, currency]);
+
+  // Keep initial destination synced if prop changes
+  useEffect(() => {
+    if (initialDestination) {
+      setFormData((prev) => ({ ...prev, destination: initialDestination }));
+    }
+  }, [initialDestination]);
+
   const [submissionResult, setSubmissionResult] = useState<{
     success: boolean;
     enquiryId?: string;
     message?: string;
     error?: string;
+    mailtoUrl?: string;
+    submittedSummary?: {
+      destination: string;
+      travelType: string;
+      currency: string;
+      budget: string;
+      dates: string;
+      guests: string;
+    };
   } | null>(null);
 
   // Validate on client before sending
@@ -68,7 +106,7 @@ export default function EnquiryForm({
     const errors: Record<string, string> = {};
 
     if (!formData.fullName.trim() || formData.fullName.trim().length < 2) {
-      errors.fullName = "Please enter your full name.";
+      errors.fullName = "Please enter your full name (at least 2 characters).";
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -76,12 +114,13 @@ export default function EnquiryForm({
       errors.email = "Please enter a valid email address.";
     }
 
-    if (!formData.phone.trim() || formData.phone.trim().length < 8) {
+    const phoneDigits = formData.phone.replace(/[^\d]/g, "");
+    if (!formData.phone.trim() || phoneDigits.length < 8) {
       errors.phone = "Please enter a valid contact number with country code.";
     }
 
     if (!formData.destination.trim()) {
-      errors.destination = "Please specify a destination.";
+      errors.destination = "Please specify a preferred destination.";
     }
 
     if (!formData.departureDate) {
@@ -96,7 +135,7 @@ export default function EnquiryForm({
       const dep = new Date(formData.departureDate);
       const ret = new Date(formData.returnDate);
       if (ret < dep) {
-        errors.returnDate = "Return date must be after departure date.";
+        errors.returnDate = "Return date must be on or after departure date.";
       }
     }
 
@@ -105,7 +144,7 @@ export default function EnquiryForm({
     }
 
     if (!formData.consent) {
-      errors.consent = "Please check the consent box to proceed.";
+      errors.consent = "Please authorize personal communication to proceed.";
     }
 
     setValidationErrors(errors);
@@ -143,29 +182,73 @@ export default function EnquiryForm({
     setIsSubmitting(true);
     setSubmissionResult(null);
 
+    // Generate clean client-side reference ID
+    const enquiryId = `ZH-${Date.now().toString(36).toUpperCase()}-${Math.floor(100 + Math.random() * 900)}`;
+
+    const formattedPayload = {
+      _subject: `New Bespoke Holiday Inquiry (${enquiryId}) from ${formData.fullName.trim()}`,
+      _replyto: formData.email.trim(),
+      _template: "table",
+      _captcha: "false",
+      Reference_ID: enquiryId,
+      Full_Name: formData.fullName.trim(),
+      Email_Address: formData.email.trim(),
+      Phone_Number: formData.phone.trim(),
+      Travel_Category:
+        formData.travelType === "international"
+          ? "International Holidays"
+          : "Domestic (India) Holidays",
+      Preferred_Destination: formData.destination.trim(),
+      Preferred_Currency: `${currencyInfo.code} (${currencyInfo.symbol} – ${currencyInfo.name})`,
+      Budget_Preference: formData.budgetRange,
+      Holiday_Experience_Style: formData.holidayType,
+      Departure_Date: formData.departureDate,
+      Return_Date: formData.returnDate,
+      Adults_Count: Number(formData.adults),
+      Children_Count: Number(formData.children) || 0,
+      Special_Requests: (formData.additionalRequirements || "").trim() || "None specified",
+      Submission_Timestamp: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+      Admin_Recipient_Email: ADMIN_EMAIL,
+      Personal_Communication_Notice:
+        "The customer awaits personal contact from the admin to discuss their requirements and plan their bespoke itinerary. No automated booking or payment was processed.",
+    };
+
     try {
-      const response = await fetch("/api/enquire", {
+      // Direct frontend submission to FormSubmit delivering straight to admin's email
+      const response = await fetch(`https://formsubmit.co/ajax/${ADMIN_EMAIL}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Accept: "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(formattedPayload),
       });
 
-      const data = await response.json();
+      const data = await response.json().catch(() => null);
 
-      if (response.ok && data.success) {
+      if (response.ok || (data && (data.success === "true" || data.success === true))) {
         setSubmissionResult({
           success: true,
-          enquiryId: data.enquiryId,
-          message: data.message,
+          enquiryId,
+          message: `Thank you, ${formData.fullName.trim()}! Your bespoke travel inquiry (${enquiryId}) has been successfully submitted directly to the admin email (${ADMIN_EMAIL}). Our senior travel concierge will personally review your preferences and contact you via phone or email within 24 business hours to curate your itinerary.`,
+          submittedSummary: {
+            destination: formData.destination.trim(),
+            travelType:
+              formData.travelType === "international"
+                ? "International Holiday"
+                : "Domestic (India) Holiday",
+            currency: currencyInfo.label,
+            budget: formData.budgetRange,
+            dates: `${formData.departureDate} to ${formData.returnDate}`,
+            guests: `${formData.adults} Adults${formData.children > 0 ? `, ${formData.children} Children` : ""}`,
+          },
         });
 
         // Trigger celebratory confetti
         try {
           confetti({
-            particleCount: 80,
-            spread: 60,
+            particleCount: 90,
+            spread: 65,
             origin: { y: 0.6 },
             colors: ["#D8B574", "#147D83", "#10243A"],
           });
@@ -177,18 +260,34 @@ export default function EnquiryForm({
           onSuccess();
         }
       } else {
+        const errorMsg =
+          (data && data.message) ||
+          "Unable to transmit your enquiry directly to the concierge email. Please try again or use the direct email option below.";
+
+        const mailtoUrl = `mailto:${ADMIN_EMAIL}?subject=${encodeURIComponent(
+          `Bespoke Holiday Inquiry from ${formData.fullName.trim()} (${enquiryId})`
+        )}&body=${encodeURIComponent(
+          `Hello Zenith Holidayz Team,\n\nI would like to plan a bespoke holiday with you:\n\n- Name: ${formData.fullName.trim()}\n- Email: ${formData.email.trim()}\n- Phone: ${formData.phone.trim()}\n- Destination: ${formData.destination.trim()}\n- Category: ${formData.travelType}\n- Currency: ${currencyInfo.label}\n- Budget: ${formData.budgetRange}\n- Departure Date: ${formData.departureDate}\n- Return Date: ${formData.returnDate}\n- Travellers: ${formData.adults} Adults, ${formData.children} Children\n- Experience Style: ${formData.holidayType}\n- Special Requests: ${formData.additionalRequirements || "None"}\n\nReference ID: ${enquiryId}`
+        )}`;
+
         setSubmissionResult({
           success: false,
-          error: data.error || "Failed to submit enquiry. Please try again.",
+          error: errorMsg,
+          mailtoUrl,
         });
-        if (data.validationErrors) {
-          setValidationErrors(data.validationErrors);
-        }
       }
     } catch {
+      const mailtoUrl = `mailto:${ADMIN_EMAIL}?subject=${encodeURIComponent(
+        `Bespoke Holiday Inquiry from ${formData.fullName.trim()} (${enquiryId})`
+      )}&body=${encodeURIComponent(
+        `Hello Zenith Holidayz Team,\n\nI would like to plan a bespoke holiday with you:\n\n- Name: ${formData.fullName.trim()}\n- Email: ${formData.email.trim()}\n- Phone: ${formData.phone.trim()}\n- Destination: ${formData.destination.trim()}\n- Category: ${formData.travelType}\n- Currency: ${currencyInfo.label}\n- Budget: ${formData.budgetRange}\n- Departure Date: ${formData.departureDate}\n- Return Date: ${formData.returnDate}\n- Travellers: ${formData.adults} Adults, ${formData.children} Children\n- Experience Style: ${formData.holidayType}\n- Special Requests: ${formData.additionalRequirements || "None"}\n\nReference ID: ${enquiryId}`
+      )}`;
+
       setSubmissionResult({
         success: false,
-        error: "Network error occurred. Please verify your connection or call us directly.",
+        error:
+          "Network connectivity issue occurred while delivering your inquiry to the admin. Please verify your connection or click the button below to send your details directly via email.",
+        mailtoUrl,
       });
     } finally {
       setIsSubmitting(false);
@@ -207,65 +306,115 @@ export default function EnquiryForm({
       returnDate: "",
       adults: 2,
       children: 0,
-      budgetRange: "₹1,50,000 – ₹2,50,000 per person",
+      budgetRange: availableBudgets[1] || availableBudgets[0] || "Flexible",
       holidayType: "Luxury & Bespoke",
       additionalRequirements: "",
       consent: false,
     });
   };
 
-  // Success view
+  // Success Confirmation Screen
   if (submissionResult?.success) {
     return (
-      <div className="bg-white rounded-2xl p-6 sm:p-10 border border-gold-500/30 shadow-xl text-center space-y-6">
-        <div className="w-16 h-16 bg-teal-50 text-teal-700 rounded-full flex items-center justify-center mx-auto border-2 border-teal-200">
-          <CheckCircle2 className="w-10 h-10" />
+      <div className="bg-white rounded-2xl p-6 sm:p-10 border border-gold-500/30 shadow-xl text-center space-y-6 animate-in fade-in duration-300">
+        <div className="w-16 h-16 bg-teal-50 text-teal-700 rounded-full flex items-center justify-center mx-auto border-2 border-teal-200 shadow-sm">
+          <CheckCircle2 className="w-10 h-10 text-teal-700" />
         </div>
 
         <div className="space-y-2">
           <span className="text-xs uppercase tracking-widest text-gold-600 font-bold">
-            Enquiry Confirmed
+            Inquiry Successfully Transmitted
           </span>
           <h3 className="font-display text-2xl sm:text-3xl font-bold text-navy-950">
-            Your Journey Planning Has Begun
+            Your Bespoke Journey Begins
           </h3>
-          <p className="text-sm text-slate-text max-w-lg mx-auto">
+          <p className="text-xs sm:text-sm text-slate-text max-w-lg mx-auto leading-relaxed">
             {submissionResult.message}
           </p>
         </div>
 
-        <div className="bg-ivory rounded-xl p-4 border border-gold-500/20 max-w-md mx-auto text-left text-xs space-y-1.5">
-          <div className="flex justify-between">
-            <span className="text-slate-text">Reference ID:</span>
-            <span className="font-mono font-bold text-navy-950">
+        {/* Inquiry Receipt & Details Card */}
+        <div className="bg-ivory rounded-2xl p-5 border border-gold-500/20 max-w-lg mx-auto text-left text-xs space-y-2.5 shadow-sm">
+          <div className="flex justify-between items-center pb-2 border-b border-gold-500/10">
+            <span className="text-slate-text font-medium">Reference Code:</span>
+            <span className="font-mono font-bold text-navy-950 bg-gold-500/15 px-2.5 py-0.5 rounded-md border border-gold-500/30">
               {submissionResult.enquiryId}
             </span>
           </div>
-          <div className="flex justify-between">
-            <span className="text-slate-text">Assigned Office:</span>
-            <span className="font-semibold text-navy-950">
-              {siteConfig.offices.delhi.name}
-            </span>
+
+          <div className="flex justify-between items-center">
+            <span className="text-slate-text">Admin Recipient:</span>
+            <span className="font-semibold text-teal-800">{ADMIN_EMAIL}</span>
           </div>
-          <div className="flex justify-between">
-            <span className="text-slate-text">Estimated Response Time:</span>
-            <span className="font-semibold text-teal-700">Within 24 Hours</span>
+
+          {submissionResult.submittedSummary && (
+            <>
+              <div className="flex justify-between items-center">
+                <span className="text-slate-text">Destination:</span>
+                <span className="font-semibold text-navy-950">
+                  {submissionResult.submittedSummary.destination}
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-slate-text">Selected Currency:</span>
+                <span className="font-semibold text-navy-950">
+                  {submissionResult.submittedSummary.currency}
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-slate-text">Budget Preference:</span>
+                <span className="font-semibold text-navy-950">
+                  {submissionResult.submittedSummary.budget}
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-slate-text">Travel Dates:</span>
+                <span className="font-semibold text-navy-950">
+                  {submissionResult.submittedSummary.dates}
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-slate-text">Party Size:</span>
+                <span className="font-semibold text-navy-950">
+                  {submissionResult.submittedSummary.guests}
+                </span>
+              </div>
+            </>
+          )}
+
+          <div className="pt-2 border-t border-gold-500/10 flex justify-between items-center text-teal-700 font-medium">
+            <span>Next Step:</span>
+            <span>Admin Personal Contact within 24 Hours</span>
+          </div>
+        </div>
+
+        {/* Personal Communication Guarantee Callout */}
+        <div className="bg-teal-50/60 rounded-xl p-4 border border-teal-200/60 max-w-lg mx-auto text-xs text-teal-900 leading-relaxed text-left flex items-start gap-3">
+          <ShieldCheck className="w-5 h-5 text-teal-700 shrink-0 mt-0.5" />
+          <div>
+            <span className="font-bold block text-teal-950 mb-0.5">
+              Personal Bespoke Planning Guarantee
+            </span>
+            <span>
+              The admin will personally contact you to discuss your exact requirements and design your tailored itinerary. No automated bookings or credit card charges are processed on this website.
+            </span>
           </div>
         </div>
 
         <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
           <button
+            type="button"
             onClick={handleReset}
-            className="btn-outline-gold px-6 py-2.5 text-xs font-semibold"
+            className="btn-outline-gold px-6 py-2.5 text-xs font-semibold cursor-pointer w-full sm:w-auto"
           >
-            Submit Another Enquiry
+            Submit Another Inquiry
           </button>
           <a
             href={`tel:${siteConfig.offices.delhi.phoneTel}`}
-            className="btn-gold px-6 py-2.5 text-xs font-bold"
+            className="btn-gold px-6 py-2.5 text-xs font-bold w-full sm:w-auto flex items-center justify-center gap-2"
           >
             <PhoneCall className="w-3.5 h-3.5" />
-            <span>Call Concierge Now</span>
+            <span>Call Delhi Concierge</span>
           </a>
         </div>
       </div>
@@ -283,40 +432,75 @@ export default function EnquiryForm({
     >
       {/* Form Header */}
       <div className="border-b border-gray-100 pb-5 mb-6">
-        <div className="flex items-center gap-2 text-gold-600 text-xs font-bold uppercase tracking-wider">
-          <Sparkles className="w-4 h-4" />
-          <span>Zenith Travel Concierge</span>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center gap-2 text-gold-600 text-xs font-bold uppercase tracking-wider">
+            <Sparkles className="w-4 h-4" />
+            <span>Zenith Travel Concierge</span>
+          </div>
+          <div className="flex items-center gap-1.5 text-xs text-slate-text bg-gray-50 px-2.5 py-1 rounded-lg border border-gray-200">
+            <Mail className="w-3.5 h-3.5 text-teal-700" />
+            <span className="text-[11px]">Direct to: {ADMIN_EMAIL}</span>
+          </div>
         </div>
+
         <h3 className="font-display text-2xl font-bold text-navy-950 mt-1">
           Plan Your Bespoke Holiday
         </h3>
         <p className="text-xs sm:text-sm text-slate-text mt-1">
-          Share your travel preferences below. Our specialists will handcraft an itinerary tailored to your schedule, party size, and desires.
+          Share your travel preferences below. All details are submitted directly to the admin, who will personally contact you to plan your handcrafted holiday.
         </p>
       </div>
 
-      {/* Global Error Banner */}
+      {/* Global Error Banner with mailto fallback */}
       {submissionResult?.error && (
-        <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs flex items-start gap-3">
-          <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
-          <div>
-            <span className="font-semibold block">Submission Error</span>
-            <span>{submissionResult.error}</span>
+        <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs space-y-3">
+          <div className="flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+            <div>
+              <span className="font-bold block">Submission Notice</span>
+              <span>{submissionResult.error}</span>
+            </div>
           </div>
+
+          {submissionResult.mailtoUrl && (
+            <div className="pt-2 border-t border-red-200/60 flex items-center justify-between gap-3">
+              <span className="text-[11px] text-red-700">
+                You can also dispatch this inquiry directly via your email client:
+              </span>
+              <a
+                href={submissionResult.mailtoUrl}
+                className="btn-gold px-3.5 py-1.5 text-[11px] font-bold rounded-lg shrink-0 flex items-center gap-1.5"
+              >
+                <Mail className="w-3 h-3" />
+                <span>Send to {ADMIN_EMAIL}</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            </div>
+          )}
         </div>
       )}
 
       <div className="space-y-5">
-        {/* Row 1: Domestic vs International Selector */}
+        {/* Row 1: Domestic vs International Selector & Currency Choice */}
         <div>
-          <label className="block text-xs font-semibold text-navy-900 mb-1.5">
-            Travel Category <span className="text-red-500">*</span>
-          </label>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-1.5">
+            <label className="block text-xs font-semibold text-navy-900">
+              Travel Category <span className="text-red-500">*</span>
+            </label>
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] font-semibold text-slate-text flex items-center gap-1">
+                <Coins className="w-3 h-3 text-gold-600" />
+                <span>Currency:</span>
+              </span>
+              <CurrencySelector variant="dropdown" />
+            </div>
+          </div>
+
           <div className="grid grid-cols-2 gap-3">
             <button
               type="button"
               onClick={() => setFormData((prev) => ({ ...prev, travelType: "international" }))}
-              className={`py-2.5 px-4 rounded-xl text-xs font-semibold transition-all border text-center ${
+              className={`py-2.5 px-4 rounded-xl text-xs font-semibold transition-all border text-center cursor-pointer ${
                 formData.travelType === "international"
                   ? "bg-navy-950 text-white border-navy-950 shadow-md"
                   : "bg-gray-50 text-navy-900 border-gray-200 hover:bg-gray-100"
@@ -327,7 +511,7 @@ export default function EnquiryForm({
             <button
               type="button"
               onClick={() => setFormData((prev) => ({ ...prev, travelType: "domestic" }))}
-              className={`py-2.5 px-4 rounded-xl text-xs font-semibold transition-all border text-center ${
+              className={`py-2.5 px-4 rounded-xl text-xs font-semibold transition-all border text-center cursor-pointer ${
                 formData.travelType === "domestic"
                   ? "bg-navy-950 text-white border-navy-950 shadow-md"
                   : "bg-gray-50 text-navy-900 border-gray-200 hover:bg-gray-100"
@@ -350,7 +534,7 @@ export default function EnquiryForm({
               name="destination"
               value={formData.destination}
               onChange={handleChange}
-              placeholder="e.g. Switzerland, Bali, Kashmir, Dubai"
+              placeholder="e.g. United Kingdom, Switzerland, Bali, Kashmir, Dubai"
               className={`w-full px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-gold-400 ${
                 validationErrors.destination
                   ? "border-red-400 bg-red-50/50"
@@ -371,13 +555,13 @@ export default function EnquiryForm({
               name="holidayType"
               value={formData.holidayType}
               onChange={handleChange}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-xs sm:text-sm bg-white focus:outline-none focus:ring-2 focus:ring-gold-400"
+              className="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-xs sm:text-sm bg-white focus:outline-none focus:ring-2 focus:ring-gold-400 cursor-pointer"
             >
+              <option value="Luxury & Bespoke">Luxury & Bespoke</option>
               <option value="Honeymoon & Romantic">Honeymoon & Romantic</option>
               <option value="Family Vacation">Family Vacation</option>
-              <option value="Luxury & Bespoke">Luxury & Bespoke</option>
-              <option value="Adventure & Nature">Adventure & Nature</option>
               <option value="Cultural & Royal Heritage">Cultural & Royal Heritage</option>
+              <option value="Adventure & Nature">Adventure & Nature</option>
               <option value="Beach & Island Relaxation">Beach & Island Relaxation</option>
             </select>
           </div>
@@ -434,7 +618,7 @@ export default function EnquiryForm({
           </div>
         </div>
 
-        {/* Row 4: Travellers & Budget */}
+        {/* Row 4: Travellers & Dynamic Budget in Selected Currency */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
             <label htmlFor="adults" className="block text-xs font-semibold text-navy-900 mb-1.5">
@@ -477,20 +661,20 @@ export default function EnquiryForm({
 
           <div>
             <label htmlFor="budgetRange" className="block text-xs font-semibold text-navy-900 mb-1.5">
-              Budget Preference
+              Budget in {currencyInfo.code} ({currencyInfo.symbol})
             </label>
             <select
               id="budgetRange"
               name="budgetRange"
               value={formData.budgetRange}
               onChange={handleChange}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-xs sm:text-sm bg-white focus:outline-none focus:ring-2 focus:ring-gold-400"
+              className="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-xs sm:text-sm bg-white focus:outline-none focus:ring-2 focus:ring-gold-400 cursor-pointer"
             >
-              <option value="Under ₹1,00,000 per person">Under ₹1,00,000 per person</option>
-              <option value="₹1,00,000 – ₹1,80,000 per person">₹1,00,000 – ₹1,80,000 per person</option>
-              <option value="₹1,80,000 – ₹3,00,000 per person">₹1,80,000 – ₹3,00,000 per person</option>
-              <option value="₹3,00,000+ Ultra Luxury">₹3,00,000+ Ultra Luxury</option>
-              <option value="Flexible / Best Value">Flexible / Best Value</option>
+              {availableBudgets.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
             </select>
           </div>
         </div>
@@ -507,7 +691,7 @@ export default function EnquiryForm({
               name="fullName"
               value={formData.fullName}
               onChange={handleChange}
-              placeholder="e.g. Rajesh Sharma"
+              placeholder="e.g. John Doe / Rajesh Sharma"
               className={`w-full px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-gold-400 ${
                 validationErrors.fullName
                   ? "border-red-400 bg-red-50/50"
@@ -551,7 +735,7 @@ export default function EnquiryForm({
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              placeholder="+91 98765 43210"
+              placeholder="+44 7911 123456 / +91 98765 43210"
               className={`w-full px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-gold-400 ${
                 validationErrors.phone
                   ? "border-red-400 bg-red-50/50"
@@ -567,7 +751,7 @@ export default function EnquiryForm({
         {/* Row 6: Additional Requirements */}
         <div>
           <label htmlFor="additionalRequirements" className="block text-xs font-semibold text-navy-900 mb-1.5">
-            Special Requests & Preferences (Optional)
+            Special Requests & Travel Preferences (Optional)
           </label>
           <textarea
             id="additionalRequirements"
@@ -575,7 +759,7 @@ export default function EnquiryForm({
             rows={3}
             value={formData.additionalRequirements}
             onChange={handleChange}
-            placeholder="Tell us about specific hotel categories (4-star / 5-star / villas), flight preferences, dietary needs, celebrations (anniversary/honeymoon), or preferred activities..."
+            placeholder="Tell us about hotel preferences (4-star / 5-star / villas), flight classes, dietary requirements, celebrations (anniversary/honeymoon), specific sights you wish to see..."
             className="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-gold-400"
           />
         </div>
@@ -588,10 +772,10 @@ export default function EnquiryForm({
               name="consent"
               checked={formData.consent}
               onChange={handleChange}
-              className="mt-0.5 w-4 h-4 rounded border-gray-300 text-gold-600 focus:ring-gold-400"
+              className="mt-0.5 w-4 h-4 rounded border-gray-300 text-gold-600 focus:ring-gold-400 cursor-pointer"
             />
             <span className="text-[11px] sm:text-xs text-slate-text leading-relaxed">
-              I authorize ZENITH HOLIDAYZ PRIVATE LIMITED to contact me via phone, email, or WhatsApp regarding this vacation enquiry. I understand my data will be handled securely and never shared with unauthorized parties.
+              I authorize the Zenith Holidayz concierge admin to contact me personally via phone, WhatsApp, or email to discuss my travel preferences. I understand my details will be kept confidential and never shared with third parties.
             </span>
           </label>
           {validationErrors.consent && (
@@ -609,21 +793,23 @@ export default function EnquiryForm({
             {isSubmitting ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin text-navy-950" />
-                <span>Validating & Submitting Enquiry...</span>
+                <span>Transmitting Inquiry to Admin ({ADMIN_EMAIL})...</span>
               </>
             ) : (
               <>
                 <Send className="w-4 h-4" />
-                <span>Submit Trip Enquiry</span>
+                <span>Submit Bespoke Holiday Inquiry</span>
               </>
             )}
           </button>
         </div>
 
-        {/* Trust Note */}
-        <div className="pt-2 flex items-center justify-center gap-2 text-[11px] text-slate-text">
-          <ShieldCheck className="w-3.5 h-3.5 text-teal-700" />
-          <span>No spam guarantee • Confidential bespoke planning</span>
+        {/* Personal Concierge Notice */}
+        <div className="pt-2 flex items-center justify-center gap-2 text-[11px] text-slate-text text-center">
+          <ShieldCheck className="w-3.5 h-3.5 text-teal-700 shrink-0" />
+          <span>
+            Delivered directly to admin • Personal consultation • No automated charge
+          </span>
         </div>
       </div>
     </form>

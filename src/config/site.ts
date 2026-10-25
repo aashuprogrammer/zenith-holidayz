@@ -112,6 +112,7 @@ export const siteConfig: SiteConfig = {
           { name: "Maldives", slug: "maldives", tag: "Private Atolls" },
           { name: "Japan", slug: "japan", tag: "Tradition & Future" },
           { name: "Paris, France", slug: "paris", tag: "Romance & Art" },
+          { name: "United Kingdom", slug: "united-kingdom", tag: "Royal Heritage" },
         ],
       },
       {

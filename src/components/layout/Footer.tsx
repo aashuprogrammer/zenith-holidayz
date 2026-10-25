@@ -155,6 +155,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/destinations/united-kingdom" className="hover:text-gold-400 transition-colors">
+                  United Kingdom Royal Heritage
+                </Link>
+              </li>
+              <li>
                 <Link href="/destinations/kashmir" className="hover:text-gold-400 transition-colors">
                   Kashmir Valleys
                 </Link>
@@ -248,12 +253,18 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/50">
-          <div className="text-center sm:text-left">
+        <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-white/50">
+          <div className="text-center md:text-left">
             <p>© 2026 {legalName}. All rights reserved.</p>
             <p className="text-[11px] text-white/40 mt-0.5">
               Handcrafting bespoke luxury journeys with precision, privacy & care.
             </p>
+          </div>
+
+          {/* Developer Credit */}
+          <div className="text-center py-1.5 px-4 rounded-full bg-white/[0.04] border border-gold-500/25 text-white/80 text-[11px] sm:text-xs shadow-sm">
+            <span>Development and Deployment: </span>
+            <span className="text-gold-400 font-semibold tracking-wide">Anurag Maurya</span>
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-6">

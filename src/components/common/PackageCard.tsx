@@ -6,6 +6,7 @@ import Link from "next/link";
 import { HolidayPackage } from "@/data/packages";
 import { Clock, MapPin, Check, ArrowRight, Calendar, Sparkles } from "lucide-react";
 import EnquiryModal from "@/components/common/EnquiryModal";
+import { useCurrency } from "@/context/CurrencyContext";
 
 interface PackageCardProps {
   pkg: HolidayPackage;
@@ -13,6 +14,11 @@ interface PackageCardProps {
 
 export default function PackageCard({ pkg }: PackageCardProps) {
   const [modalOpen, setModalOpen] = useState(false);
+  const { formatEstimate } = useCurrency();
+
+  const displayEstimate = pkg.startingPriceINR
+    ? formatEstimate(pkg.startingPriceINR)
+    : pkg.startingEstimate;
 
   return (
     <>
@@ -86,7 +92,7 @@ export default function PackageCard({ pkg }: PackageCardProps) {
                   Starting Indicator
                 </span>
                 <span className="text-base sm:text-lg font-bold text-navy-950">
-                  {pkg.startingEstimate}
+                  {displayEstimate}
                 </span>
               </div>
               <span className="text-[10px] text-slate-text/70 italic text-right max-w-[120px]">

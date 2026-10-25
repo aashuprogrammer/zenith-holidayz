@@ -5,6 +5,7 @@ import Link from "next/link";
 import { packages, PackageCategory } from "@/data/packages";
 import PackageCard from "@/components/common/PackageCard";
 import SectionHeading from "@/components/common/SectionHeading";
+import CurrencySelector from "@/components/common/CurrencySelector";
 import { ArrowRight, Sparkles } from "lucide-react";
 
 export default function PackagesSection() {
@@ -34,21 +35,26 @@ export default function PackagesSection() {
           subtitle="Explore meticulously balanced vacations designed by senior travel specialists. Every itinerary includes premium lodging, private transfers, and handpicked local experiences."
         />
 
-        {/* Category Filters */}
-        <div className="flex items-center justify-start lg:justify-center gap-2 mb-12 overflow-x-auto pb-3">
-          {categories.map((cat) => (
-            <button
-              key={cat.value}
-              onClick={() => setActiveCategory(cat.value)}
-              className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
-                activeCategory === cat.value
-                  ? "bg-navy-950 text-gold-400 shadow-md"
-                  : "bg-ivory text-navy-900 border border-gray-200 hover:border-gold-400"
-              }`}
-            >
-              {cat.label}
-            </button>
-          ))}
+        {/* Category Filters & Currency Bar */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-12">
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 w-full md:w-auto">
+            {categories.map((cat) => (
+              <button
+                key={cat.value}
+                onClick={() => setActiveCategory(cat.value)}
+                className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                  activeCategory === cat.value
+                    ? "bg-navy-950 text-gold-400 shadow-md"
+                    : "bg-ivory text-navy-900 border border-gray-200 hover:border-gold-400"
+                }`}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
+          <div className="shrink-0 w-full md:w-auto flex justify-end">
+            <CurrencySelector variant="pills" label="Currency:" />
+          </div>
         </div>
 
         {/* Packages Grid */}

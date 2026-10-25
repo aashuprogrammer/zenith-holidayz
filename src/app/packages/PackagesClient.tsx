@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { packages, HolidayPackage, PackageCategory } from "@/data/packages";
 import PackageCard from "@/components/common/PackageCard";
 import Breadcrumb from "@/components/common/Breadcrumb";
+import CurrencySelector from "@/components/common/CurrencySelector";
 import { Search, Filter, RotateCcw, Compass, Clock, MapPin } from "lucide-react";
 
 export default function PackagesClient() {
@@ -162,24 +163,29 @@ export default function PackagesClient() {
             </div>
           </div>
 
-          {/* Category Horizontal Pills */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-1 pt-2 border-t border-gray-100">
-            <span className="text-[11px] uppercase font-bold tracking-wider text-slate-text mr-2 shrink-0">
-              Style:
-            </span>
-            {categories.map((cat) => (
-              <button
-                key={cat.value}
-                onClick={() => setSelectedCategory(cat.value)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
-                  selectedCategory === cat.value
-                    ? "bg-navy-950 text-gold-400 shadow-sm"
-                    : "bg-gray-100 text-navy-900 hover:bg-gray-200"
-                }`}
-              >
-                {cat.label}
-              </button>
-            ))}
+          {/* Category Horizontal Pills & Currency Selection */}
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pt-2 border-t border-gray-100">
+            <div className="flex items-center gap-2 overflow-x-auto pb-1">
+              <span className="text-[11px] uppercase font-bold tracking-wider text-slate-text mr-2 shrink-0">
+                Style:
+              </span>
+              {categories.map((cat) => (
+                <button
+                  key={cat.value}
+                  onClick={() => setSelectedCategory(cat.value)}
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                    selectedCategory === cat.value
+                      ? "bg-navy-950 text-gold-400 shadow-sm"
+                      : "bg-gray-100 text-navy-900 hover:bg-gray-200"
+                  }`}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </div>
+            <div className="shrink-0 pt-2 lg:pt-0">
+              <CurrencySelector variant="pills" label="Currency:" />
+            </div>
           </div>
         </div>
 

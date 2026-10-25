@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { siteConfig } from "@/config/site";
+import CurrencySelector from "@/components/common/CurrencySelector";
 import {
   ChevronDown,
   Menu,
@@ -278,8 +279,9 @@ export default function Navbar() {
             </Link>
           </nav>
 
-          {/* Right Action: Plan Your Trip CTA */}
-          <div className="hidden lg:flex items-center gap-3">
+          {/* Right Action: Currency Switcher & Plan Your Trip CTA */}
+          <div className="hidden lg:flex items-center gap-2.5">
+            <CurrencySelector variant="dropdown" />
             <Link
               href="/plan-your-trip"
               className="btn-gold px-5 py-2.5 text-xs uppercase tracking-wider font-bold shadow-lg"
@@ -289,8 +291,9 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="lg:hidden flex items-center gap-2">
+          {/* Mobile Menu Button & Currency */}
+          <div className="lg:hidden flex items-center gap-1.5 sm:gap-2">
+            <CurrencySelector variant="dropdown" />
             <Link
               href="/plan-your-trip"
               className="btn-gold px-3 py-1.5 text-xs font-bold sm:inline-flex hidden"
@@ -441,6 +444,11 @@ export default function Navbar() {
           </nav>
 
           <div className="pt-4 border-t border-white/10 space-y-3">
+            <div className="flex items-center justify-between py-1 px-1">
+              <span className="text-xs text-white/80 font-medium">Select Currency:</span>
+              <CurrencySelector variant="dropdown" />
+            </div>
+
             <Link
               href="/plan-your-trip"
               className="btn-gold w-full py-3 text-xs uppercase tracking-wider font-bold text-center flex items-center justify-center gap-2"

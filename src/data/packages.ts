@@ -27,6 +27,7 @@ export interface HolidayPackage {
     nights: number;
   };
   startingEstimate: string;
+  startingPriceINR: number;
   pricingNote: string;
   coverImage: string;
   gallery: string[];
@@ -52,6 +53,7 @@ export const packages: HolidayPackage[] = [
     categories: ["international", "luxury", "honeymoon"],
     duration: { days: 8, nights: 7 },
     startingEstimate: "From ₹2,45,000*",
+    startingPriceINR: 245000,
     pricingNote: "*Sample starting estimate per person on twin-sharing basis. Final cost customized based on season, flight selection & hotel category.",
     coverImage: "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?auto=format&fit=crop&w=1000&q=80",
     gallery: [
@@ -155,6 +157,7 @@ export const packages: HolidayPackage[] = [
     categories: ["international", "honeymoon", "luxury"],
     duration: { days: 7, nights: 6 },
     startingEstimate: "From ₹88,000*",
+    startingPriceINR: 88000,
     pricingNote: "*Sample starting estimate per person on twin-sharing basis. Tailored to chosen dates, room category & flight rates.",
     coverImage: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1000&q=80",
     gallery: [
@@ -250,6 +253,7 @@ export const packages: HolidayPackage[] = [
     categories: ["international", "family", "luxury"],
     duration: { days: 6, nights: 5 },
     startingEstimate: "From ₹72,000*",
+    startingPriceINR: 72000,
     pricingNote: "*Sample starting estimate per person on twin-sharing basis. Final package verified based on travel dates and room occupancy.",
     coverImage: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1000&q=80",
     gallery: [
@@ -338,6 +342,7 @@ export const packages: HolidayPackage[] = [
     categories: ["domestic", "family", "honeymoon", "cultural"],
     duration: { days: 6, nights: 5 },
     startingEstimate: "From ₹46,000*",
+    startingPriceINR: 46000,
     pricingNote: "*Sample starting estimate per person on twin-sharing basis. Exact rates customized to season and preferred vehicle.",
     coverImage: "https://images.unsplash.com/photo-1595815771614-ade9d652a65d?auto=format&fit=crop&w=1000&q=80",
     gallery: [
@@ -426,6 +431,7 @@ export const packages: HolidayPackage[] = [
     categories: ["domestic", "cultural", "family", "luxury"],
     duration: { days: 8, nights: 7 },
     startingEstimate: "From ₹58,000*",
+    startingPriceINR: 58000,
     pricingNote: "*Sample starting estimate per person on twin-sharing basis. Verified itinerary tailored to preferred dates and palace tiers.",
     coverImage: "https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=1000&q=80",
     gallery: [
@@ -528,6 +534,7 @@ export const packages: HolidayPackage[] = [
     categories: ["international", "luxury", "honeymoon"],
     duration: { days: 5, nights: 4 },
     startingEstimate: "From ₹1,65,000*",
+    startingPriceINR: 165000,
     pricingNote: "*Sample starting estimate per person on twin-sharing basis. Includes seaplane transfers & full board meal plan.",
     coverImage: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=1000&q=80",
     gallery: [
@@ -609,6 +616,7 @@ export const packages: HolidayPackage[] = [
     categories: ["domestic", "family", "honeymoon", "cultural"],
     duration: { days: 6, nights: 5 },
     startingEstimate: "From ₹38,000*",
+    startingPriceINR: 38000,
     pricingNote: "*Sample starting estimate per person on twin-sharing basis. Tailored to chosen dates, room category & flight rates.",
     coverImage: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1000&q=80",
     gallery: [
@@ -697,6 +705,7 @@ export const packages: HolidayPackage[] = [
     categories: ["international", "cultural", "luxury"],
     duration: { days: 9, nights: 8 },
     startingEstimate: "From ₹2,85,000*",
+    startingPriceINR: 285000,
     pricingNote: "*Sample starting estimate per person on twin-sharing basis. Exact pricing tailored to cherry blossom / autumn peak seasons.",
     coverImage: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1000&q=80",
     gallery: [
@@ -797,6 +806,7 @@ export const packages: HolidayPackage[] = [
     categories: ["international", "family", "adventure"],
     duration: { days: 7, nights: 6 },
     startingEstimate: "From ₹54,000*",
+    startingPriceINR: 54000,
     pricingNote: "*Sample starting estimate per person on twin-sharing basis. Tailored to chosen season and hotel category.",
     coverImage: "https://images.unsplash.com/photo-1528181304800-259b08848526?auto=format&fit=crop&w=1000&q=80",
     gallery: [
@@ -871,6 +881,104 @@ export const packages: HolidayPackage[] = [
         day: 7,
         title: "Krabi Departure",
         description: "Breakfast at the resort, private transfer to Krabi Airport for your connecting flight home.",
+        meals: "Breakfast",
+      },
+    ],
+  },
+  {
+    id: "pkg-uk-royal-heritage",
+    slug: "royal-britain-scotland-heritage",
+    title: "Royal Britain, Cotswolds & Scottish Highlands",
+    destinationSlug: "united-kingdom",
+    destinationName: "United Kingdom",
+    region: "International",
+    categories: ["international", "luxury", "cultural"],
+    duration: { days: 8, nights: 7 },
+    startingEstimate: "From ₹2,35,000*",
+    startingPriceINR: 235000,
+    pricingNote: "*Sample starting estimate per person on twin-sharing basis. Converted to GBP (~£2,230) or chosen currency upon selection.",
+    coverImage: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=1200&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1520986606214-8b456906c813?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1486299267070-83823f5448dd?auto=format&fit=crop&w=1200&q=80",
+    ],
+    shortDescription:
+      "Experience London's iconic royal landmarks and the charming stone hamlets of the Cotswolds before taking the scenic rail to Edinburgh and the Scottish Highlands.",
+    overview:
+      "Immerse yourself in centuries of royal history, dramatic Scottish landscapes, and quintessentially British elegance. From private guided tours of Westminster Abbey and Buckingham Palace to a leisurely drive through honey-hued Cotswold villages and a first-class train ride north to Edinburgh's medieval Royal Mile and the mystical Scottish Highlands, this bespoke itinerary offers the ultimate British voyage.",
+    highlights: [
+      "Private London highlights tour: Tower of London, Westminster Abbey & Buckingham Palace",
+      "Scenic countryside journey through the Cotswolds & Oxford University colleges",
+      "First-Class LNER train journey from London Kings Cross to Edinburgh Waverley",
+      "Edinburgh Castle VIP visit and private walking tour of the Royal Mile",
+      "Scottish Highlands day excursion: Loch Ness, Glen Coe & Highland whisky distillery",
+    ],
+    inclusions: [
+      "7 Nights handpicked 4-Star Superior / 5-Star luxury boutique hotels with daily full English breakfast",
+      "1st Class BritRail express train London to Edinburgh with reserved panoramic seating",
+      "Private Mercedes chauffeur transfers for all airport and inter-city connections",
+      "Pre-booked VIP skip-the-line admissions to Tower of London, Windsor Castle & Edinburgh Castle",
+      "Private guided full-day excursion through the Scottish Highlands & Loch Ness",
+      "Dedicated 24/7 UK concierge support from Zenith Holidayz specialists",
+    ],
+    exclusions: [
+      "International flights and UK Standard Visitor Visa fee",
+      "Lunches and dinners not specified in the daily itinerary",
+      "Personal expenses, optional museum excursions, and gratuities",
+      "Comprehensive travel and medical insurance (strongly advised)",
+    ],
+    accommodationType: "4-Star Superior & 5-Star Heritage City Hotels",
+    bestSeason: "May to October (Sunny, mild weather & long daylight)",
+    featured: true,
+    itinerary: [
+      {
+        day: 1,
+        title: "Arrival in London – Private Transfer & Royal Welcome",
+        description: "Arrive at London Heathrow Airport. Zenith Holidayz private chauffeur awaits to transfer you to your boutique Mayfair/Kensington hotel. Enjoy high tea and an evening at leisure.",
+        meals: "Afternoon Tea",
+      },
+      {
+        day: 2,
+        title: "Historic London: Tower of London & Westminster Abbey",
+        description: "Morning private guided tour of the Tower of London to view the Crown Jewels before the crowds. Continue past St. Paul's Cathedral and Westminster Abbey with an evening Thames River cruise.",
+        meals: "Breakfast",
+      },
+      {
+        day: 3,
+        title: "Windsor Castle & Honey-Hued Cotswolds Villages",
+        description: "Travel by private car to Windsor Castle, the world's oldest inhabited castle. Continue through the rolling green hills and thatched cottages of Bourton-on-the-Water and Stow-on-the-Wold in the Cotswolds.",
+        meals: "Breakfast",
+      },
+      {
+        day: 4,
+        title: "1st Class Panoramic Rail to Edinburgh",
+        description: "Board the First-Class train from London to Edinburgh, enjoying coastal vistas of Northumberland. Check into your hotel situated along the historic Royal Mile or Princes Street.",
+        meals: "Breakfast",
+      },
+      {
+        day: 5,
+        title: "Edinburgh Castle & The Royal Mile Exploration",
+        description: "Ascend Castle Rock to explore Edinburgh Castle, home to the Honours of Scotland. Walk down the Royal Mile to the Palace of Holyroodhouse and enjoy a private Scotch whisky tasting.",
+        meals: "Breakfast",
+      },
+      {
+        day: 6,
+        title: "Scottish Highlands, Glen Coe & Loch Ness Safari",
+        description: "Full-day excursion into the rugged Scottish Highlands. Travel through dramatic Glen Coe, drive along the Great Glen, and cruise the deep waters of legendary Loch Ness.",
+        meals: "Breakfast",
+      },
+      {
+        day: 7,
+        title: "Scottish Heritage & St Andrews Coastal Excursion",
+        description: "Visit the historic coastal town of St Andrews, explore ancient cathedral ruins, and enjoy traditional fish and chips or a fine-dining farewell dinner in Edinburgh.",
+        meals: "Breakfast",
+      },
+      {
+        day: 8,
+        title: "Farewell United Kingdom",
+        description: "Breakfast at the hotel followed by private transfer to Edinburgh Airport (or rail transfer back to London) for your connecting flight home.",
         meals: "Breakfast",
       },
     ],
